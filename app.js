@@ -8,18 +8,33 @@ const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
 const PORT = process.env.PORT || 8080;
 
-const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+const username = "yyyuvvvraj";
+const rawPassword = "Yuvraj@2806";
+const encodedPassword = encodeURIComponent(rawPassword); // Yuvraj%402806
 
+const MONGO_ATLAS_URI = `mongodb+srv://${username}:${encodedPassword}@cluster0.4tqzhl2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-main().then(()=>{
+async function main() {
+  try {
+    await mongoose.connect(MONGO_ATLAS_URI, {
+      // Since useNewUrlParser and useUnifiedTopology are deprecated options in latest Mongoose versions,
+      // you can safely omit them.
+    });
     console.log("MongoDB connected");
-})
-.catch((err)=>{
-    console.log(err);
-})
-async function main(){
-    await mongoose.connect(MONGO_URL);
+
+    // Start the server only after DB is connected
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
+  }
 }
+
+main();
+
+
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"/views"));
