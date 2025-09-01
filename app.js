@@ -6,6 +6,7 @@ const path=require("path");
 const { title } = require("process");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
+const PORT = process.env.PORT || 8080;
 
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -100,6 +101,7 @@ app.delete("/listings/:id",async (req,res)=>{
 //     res.send("Successfully added a new listing");
 // });
 
-app.listen(8080,()=>{
-    console.log("Server is running on port 8080");
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
